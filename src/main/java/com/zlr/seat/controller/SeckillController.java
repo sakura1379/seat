@@ -182,7 +182,7 @@ public class SeckillController implements InitializingBean {
             return;
         }
         //减库存 下订单 写入秒杀订单
-        seckillOrderService.insert(user, seatsVo);
+        seckillOrderService.seckillOrder(user,seatsVo);
 
     }
 }

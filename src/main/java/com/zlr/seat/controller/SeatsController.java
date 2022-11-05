@@ -1,6 +1,7 @@
 package com.zlr.seat.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.zlr.seat.common.aop.LogAnnotation;
 import com.zlr.seat.service.SeatsService;
 import com.zlr.seat.vo.Result;
 import com.zlr.seat.vo.SeatsDetailVo;
@@ -33,6 +34,7 @@ public class SeatsController {
     SeatsService seatsService;
 
     @GetMapping("/page")
+    @LogAnnotation(module="座位服务",operator="分页查询所有可秒杀的座位列表")
     @ApiOperation(value = "分页查询所有可秒杀的座位列表",notes = "不需要accessToken")
     public Result<IPage<SeatsVo>> page(
             @ApiParam("当前页，默认值：1") @RequestParam(value = "current", required = false, defaultValue = "1") long current,
@@ -42,6 +44,7 @@ public class SeatsController {
 
 
     @GetMapping("/detail")
+    @LogAnnotation(module="座位服务",operator="根据id查询秒杀座位详细信息")
     @ApiOperation(value = "根据id查询秒杀座位详细信息",notes = "需要accessToken")
     public Result<SeatsDetailVo> detail(
             @ApiParam("座位Id") @RequestParam(value = "seatsId") long seatsId) {

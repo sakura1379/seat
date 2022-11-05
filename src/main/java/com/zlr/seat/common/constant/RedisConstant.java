@@ -26,14 +26,27 @@ public class RedisConstant {
     public static final String SMS_LIMIT_NAME ="sms";
 
 
-    /**
-     * 秒杀Path前缀
-     */
-    public static final String SECKILL_PATH = "SecKillPath:";
+
 
     /**
-     * path过期时间
+     * path、是否秒杀结束过期时间
      */
     public static final int SEATS_ID = 60;
+
+    /**
+     * 是否秒杀结束
+     */
+    public static final String IS_SEAT_OVER = "IS_SEAT_OVER";
+
+    /**
+     * 库存redis缓存
+     */
+    public static final String SECKILL_STOCK = "SeckillGoodsStock:";
+
+
+    /**
+     * 库存存储、座位列表过期时间
+     */
+    public static final int SEATS_LIST = 60 * 30 * 24;
 }
 

@@ -4,6 +4,7 @@ import com.zlr.seat.entity.pojo.OrderInfo;
 import com.zlr.seat.entity.pojo.Seats;
 import com.zlr.seat.entity.pojo.SeckillOrder;
 import com.zlr.seat.entity.pojo.User;
+import com.zlr.seat.vo.SeatsVo;
 
 /**
  * @author Zenglr
@@ -22,6 +23,14 @@ public interface SeckillOrderService {
     OrderInfo getOrderInfo(long orderId);
 
     /**
+     * 秒杀下订单
+     * @param user
+     * @param seatsVo
+     * @return
+     */
+    OrderInfo seckillOrder(User user, SeatsVo seatsVo);
+
+    /**
      * 新建一个订单
      * @param user
      * @param seats
@@ -30,13 +39,21 @@ public interface SeckillOrderService {
     OrderInfo insert(User user, Seats seats);
 
     /**
+     * 查看是否秒杀成功
+     * @param userId
+     * @param seatsId
+     * @return
+     */
+    long getSeckillResult(long userId, long seatsId);
+
+    /**
      * 验证path是否正确
      * @param user
-     * @param goodsId
+     * @param seatsId
      * @param path
      * @return
      */
-    boolean checkPath(User user, long goodsId, String path);
+    boolean checkPath(User user, long seatsId, String path);
 
 
     /**
@@ -54,4 +71,18 @@ public interface SeckillOrderService {
      * @return
      */
     SeckillOrder checkSecKillOrder(long userId, long seatsId);
+
+
+    /**
+     * 设置秒杀结束标志
+     * @param seatsId
+     */
+    void setSeatsOver(Long seatsId);
+
+    /**
+     * 查看秒杀商品是否已经结束
+     * @param seatsId
+     * @return
+     */
+    boolean getSeatsOver(long seatsId);
 }

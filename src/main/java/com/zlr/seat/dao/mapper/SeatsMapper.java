@@ -31,4 +31,17 @@ public interface SeatsMapper extends BaseMapper<Seats> {
      * @return
      */
     SeatsVo selectSeatsVoById(long seatsId);
+
+    /**
+     * 减库存
+     * @param seatsId
+     * @return
+     */
+    int updateStock(long seatsId);
+
+    /**
+     * 查询所有
+     * @return
+     */
+    List<SeatsVo> selectAllList();
 }

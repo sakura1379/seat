@@ -57,7 +57,7 @@ public class SeatsServiceImpl extends ServiceImpl<SeatsMapper, Seats> implements
         UserVo userVo = userService.selectUserVoById(userId);
         SeatsDetailVo seatsDetailVo = new SeatsDetailVo();
         seatsDetailVo.setSeats(seatsVo);
-        seatsDetailVo.setUser(userDetail);
+        seatsDetailVo.setUser(userVo);
         long startAt = seatsVo.getStartDate().getTime();
         long endAt = seatsVo.getEndDate().getTime();
         long now = System.currentTimeMillis();
@@ -77,7 +77,17 @@ public class SeatsServiceImpl extends ServiceImpl<SeatsMapper, Seats> implements
     }
 
     @Override
-    public int reduceStock(long seatsId) {
-        return 0;
+    public boolean reduceStock(long seatsId) {
+        return seatsMapper.updateStock(seatsId) > 0;
+    }
+
+    @Override
+    public List<SeatsVo> getAllSecKillSeatsList() {
+        return seatsMapper.selectAllList();
+    }
+
+    @Override
+    public SeatsVo getSeatsVoById(long seatsId) {
+        return seatsMapper.selectSeatsVoById(seatsId);
     }
 }

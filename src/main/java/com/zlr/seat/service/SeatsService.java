@@ -1,6 +1,7 @@
 package com.zlr.seat.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.zlr.seat.entity.pojo.Seats;
 import com.zlr.seat.vo.SeatsDetailVo;
 import com.zlr.seat.vo.SeatsVo;
 
@@ -34,5 +35,19 @@ public interface SeatsService {
      * @param seatsId
      * @return
      */
-    int reduceStock(long seatsId);
+    boolean reduceStock(long seatsId);
+
+
+    /**
+     * 获得所有秒杀的座位列表信息
+     * @return
+     */
+    List<SeatsVo> getAllSecKillSeatsList();
+
+    /**
+     * 获得seatsVo
+     * @param seatsId
+     * @return
+     */
+    SeatsVo getSeatsVoById(long seatsId);
 }

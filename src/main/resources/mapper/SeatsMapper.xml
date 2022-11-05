@@ -42,4 +42,20 @@
         WHERE  seats.id = #{seatsId}
     </select>
 
+    <update id="updateStock" parameterType="long" >
+    UPDATE seckill_seats
+    SET stock_count = stock_count -1
+    WHERE seats_id = #{seatsId}
+  </update>
+
+    <select id="selectAllList" resultMap="seatsVoResultMap">
+        select
+        seats.id, seats.seats_area, seats.seats_floor, seats.use_date
+        ,
+        ss.stock_count , ss.start_date , ss.end_date
+        from
+        seats
+        left join seckill_seats ss on ss.seats_id = seats.id
+    </select>
+
 </mapper>

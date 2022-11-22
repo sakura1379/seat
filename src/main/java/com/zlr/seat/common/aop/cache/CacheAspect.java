@@ -79,8 +79,7 @@ public class CacheAspect {
             String redisValue = redisTemplate.opsForValue().get(redisKey);
             if (StringUtils.isNotEmpty(redisValue)){
                 log.info("缓存命中========,{}",redisKey);
-                Result result = JSON.parseObject(redisValue, Result.class);
-                return result;
+                return JSON.parseObject(redisValue, Result.class);
             }
             Object proceed = pjp.proceed();
             redisTemplate.opsForValue().set(redisKey,JSON.toJSONString(proceed), Duration.ofMillis(expire));

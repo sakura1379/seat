@@ -159,7 +159,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
 //                .antMatchers(ignorePropertiesList.toArray(new String[size])).permitAll()
                 .antMatchers("/oauth","/refresh_access_token","/sms/send"
-                        ,"/mobile/login","/user/register","/account/login","/password/reset","/seat/page").permitAll()
+                        ,"/mobile/login","/user/register","/account/login","/password/reset","/seat/page","/logout").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"));

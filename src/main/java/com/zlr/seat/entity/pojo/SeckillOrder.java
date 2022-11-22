@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 /**
  * @author Zenglr
  * @program: seat
@@ -21,7 +23,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ApiModel(value="SeckillOrder对象", description="秒杀订单表")
-public class SeckillOrder {
+public class SeckillOrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

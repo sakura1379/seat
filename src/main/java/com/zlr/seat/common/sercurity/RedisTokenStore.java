@@ -475,7 +475,7 @@ public class RedisTokenStore {
      *
      * @param id
      */
-//    @CacheEvict(value="user",key="#id",beforeInvocation = true)
+    @CacheEvict(value="user",key="#id",beforeInvocation = true)
     public void clearUserCacheById(Long id) {
         log.info("清除用户{}缓存", id);
     }

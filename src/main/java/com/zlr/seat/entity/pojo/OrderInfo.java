@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -23,18 +24,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ApiModel(value="OrderInfo对象", description="订单表")
-public class OrderInfo {
-    /**
-     * `id` bigint NOT NULL AUTO_INCREMENT,
-     *   `user_id` bigint DEFAULT NULL COMMENT '用户ID',
-     *   `seats_id` bigint DEFAULT NULL COMMENT '座位ID',
-     *   `seats_area` varchar(16) DEFAULT NULL COMMENT '冗余过来的座位区域',
-     *   `seats_count` int DEFAULT '0' COMMENT '座位数量',
-     *   `order_channel` tinyint DEFAULT '0' COMMENT '1pc，2android，3ios',
-     *   `status` tinyint DEFAULT '0' COMMENT '预订状态，0新建未确认，1已确认，2已完成，3已取消',
-     *   `create_date` datetime DEFAULT NULL COMMENT '预订的创建时间',
-     *   `use_date` datetime DEFAULT NULL COMMENT '冗余过来的使用时间',
-     */
+public class OrderInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

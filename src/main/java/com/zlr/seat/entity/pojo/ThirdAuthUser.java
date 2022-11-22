@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 /**
  * @author Zenglr
  * @program: seat
@@ -13,7 +15,7 @@ import lombok.experimental.Accessors;
  * @create 2022-09-17-上午11:11
  */
 @Data
-public class ThirdAuthUser {
+public class ThirdAuthUser implements Serializable {
     /**
      * 第三方用户唯一id
      */

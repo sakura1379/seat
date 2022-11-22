@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -23,14 +24,8 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ApiModel(value="Seats对象", description="座位表")
-public class Seats {
-/**
- * `id` bigint NOT NULL AUTO_INCREMENT COMMENT '座位ID',
- *   `seats_area` varchar(16) DEFAULT NULL COMMENT '座位区域',
- *   `seats_floor` varchar(64) DEFAULT NULL COMMENT '座位楼层',
- *   `use_date` datetime DEFAULT NULL COMMENT '使用时间',
- *   `seats_stock` int DEFAULT '0' COMMENT '座位区域库存，-1表示没有限制',
- */
+public class Seats implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "座位id")

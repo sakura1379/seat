@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 /**
  * @author Zenglr
  * @program: seat
@@ -21,7 +23,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ApiModel(value="RolePermission", description="角色权限表")
-public class RolePermission {
+public class RolePermission implements Serializable {
 
     @ApiModelProperty(value = "id")
     @TableId(value = "id", type = IdType.AUTO)

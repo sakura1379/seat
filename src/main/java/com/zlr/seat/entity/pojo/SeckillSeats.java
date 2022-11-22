@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -24,7 +25,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ApiModel(value="SeckillSeats对象", description="秒杀座位表")
-public class SeckillSeats {
+public class SeckillSeats implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "秒杀座位id")

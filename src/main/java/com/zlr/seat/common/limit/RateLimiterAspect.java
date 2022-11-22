@@ -89,8 +89,11 @@ public class RateLimiterAspect implements ApplicationContextAware {
             if (rateLimiter.appendIp()) {
                 key = key + SEPARATOR + IpUtils.getIpAddress();
             }
+            log.info("======>rateLimit key: " + key);
             long max = rateLimiter.max();
             long timeout = rateLimiter.timeout();
+            log.info("======>rateLimit max: " + max);
+            log.info("======>rateLimit timeout: " + timeout);
             TimeUnit timeUnit = rateLimiter.timeUnit();
             Limit limit = new Limit();
             limit.setKey(key);
@@ -143,6 +146,7 @@ public class RateLimiterAspect implements ApplicationContextAware {
         long expired = now - ttl;
         // 注意这里必须转为 String,否则会报错 java.lang.Long cannot be cast to java.lang.String
         Long executeTimes = stringRedisTemplate.execute(limitRedisScript, Collections.singletonList(key), now + "", ttl + "", expired + "", max + "");
+        log.info("======>rateLimit executeTimes: " + executeTimes);
         if (executeTimes != null) {
             if (executeTimes == 0) {
                 log.error("【{}】在单位时间 {} 毫秒内已达到访问上限，当前接口上限 {}", key, ttl, max);

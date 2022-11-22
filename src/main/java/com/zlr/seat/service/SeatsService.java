@@ -50,4 +50,9 @@ public interface SeatsService {
      * @return
      */
     SeatsVo getSeatsVoById(long seatsId);
+
+    /**
+     * 清空缓存
+     */
+    void clearCache();
 }

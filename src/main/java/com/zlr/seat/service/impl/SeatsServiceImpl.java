@@ -14,6 +14,8 @@ import com.zlr.seat.vo.SeatsVo;
 import com.zlr.seat.vo.StudentUserDetails;
 import com.zlr.seat.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,6 +39,7 @@ public class SeatsServiceImpl extends ServiceImpl<SeatsMapper, Seats> implements
     IUserService userService;
 
     @Override
+    @Cacheable(value = "seat:page:current", key = "#current")
     public IPage<SeatsVo> getSecKillSeatsList(long current, long size) {
         QueryWrapper<Seats> queryWrapper = new QueryWrapper<>();
         int count = count(queryWrapper);
@@ -53,7 +56,8 @@ public class SeatsServiceImpl extends ServiceImpl<SeatsMapper, Seats> implements
     public SeatsDetailVo getSeatsDetailById(long id){
         StudentUserDetails userDetail = ServerSecurityContext.getUserDetail(true);
         long userId = userDetail.getId();
-        SeatsVo seatsVo = seatsMapper.selectSeatsVoById(id);
+//        SeatsVo seatsVo = seatsMapper.selectSeatsVoById(id);
+        SeatsVo seatsVo = getSeatsVoById(id);
         UserVo userVo = userService.selectUserVoById(userId);
         SeatsDetailVo seatsDetailVo = new SeatsDetailVo();
         seatsDetailVo.setSeats(seatsVo);
@@ -78,16 +82,29 @@ public class SeatsServiceImpl extends ServiceImpl<SeatsMapper, Seats> implements
 
     @Override
     public boolean reduceStock(long seatsId) {
-        return seatsMapper.updateStock(seatsId) > 0;
+        boolean res = seatsMapper.updateStock(seatsId) > 0;
+        clearCache();
+        return res;
     }
 
     @Override
+    @Cacheable(value = "seat:getAllSecKillSeatsList")
     public List<SeatsVo> getAllSecKillSeatsList() {
         return seatsMapper.selectAllList();
     }
 
     @Override
+//    @Cacheable(value = "seat", key = "#id")
     public SeatsVo getSeatsVoById(long seatsId) {
         return seatsMapper.selectSeatsVoById(seatsId);
+    }
+
+    /**
+     * 清空缓存
+     */
+    @Override
+    @CacheEvict(value = "seat",allEntries = true)
+    public void clearCache() {
+        log.info("清空seat缓存");
     }
 }

@@ -30,7 +30,6 @@ import javax.validation.constraints.NotNull;
  * @author Zenglr
  * @program: seat
  * @packagename: com.zlr.seat.controller
- * TODO 新增管理员、退出登录
  * @Description
  * @create 2022-10-15-下午3:17
  */

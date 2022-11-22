@@ -15,6 +15,7 @@ import com.zlr.seat.service.SeckillOrderService;
 import com.zlr.seat.utils.MD5Util;
 import com.zlr.seat.vo.SeatsVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,7 @@ public class SeckillOrderServiceImpl extends ServiceImpl<SeckillOrderMapper, Sec
     private final static String SECKILL_PATH = "SecKillPath:";
 
     @Override
+    @Cacheable(value = "order", key = "#orderId")
     public OrderInfo getOrderInfo(long orderId) {
         log.info("SeckillOrderService-getOrderInfo-receive:" + orderId);
         OrderInfo orderInfo = orderInfoMapper.selectById(orderId);
@@ -131,6 +133,7 @@ public class SeckillOrderServiceImpl extends ServiceImpl<SeckillOrderMapper, Sec
     }
 
     @Override
+//    @Cacheable(value = "order", key = "#userId+#seatsId")
     public SeckillOrder checkSecKillOrder(long userId, long seatsId) {
         log.info("checkSecKillOrder:"+seatsId+"userId:"+userId);
         QueryWrapper<SeckillOrder> queryWrapper =  new QueryWrapper<>();

@@ -41,6 +41,7 @@ import java.util.concurrent.TimeUnit;
  * @program: seat
  * @packagename: com.zlr.seat.controller
  * @Description
+ * TODO 加缓存策略、限流、并发、异常测试
  * @create 2022-11-03-下午3:46
  */
 @Slf4j
@@ -120,7 +121,7 @@ public class SeckillController implements InitializingBean {
     }
 
 
-//    @RateLimiter()
+    @RateLimiter(name = "getSeckillPath",max = 5,key = "#seatsId", timeout = 5L)
     @GetMapping("/path")
     @LogAnnotation(module="秒杀服务",operator="获取秒杀座位提交订单地址")
     @ApiOperation(value = "获取秒杀座位提交订单地址",notes = "需要accessToken")

@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ import javax.validation.constraints.NotNull;
  * @author Zenglr
  * @program: seat
  * @packagename: com.zlr.seat.controller
- * TODO 加权限验证
+ * TODO 新增管理员、退出登录
  * @Description
  * @create 2022-10-15-下午3:17
  */
@@ -121,6 +122,7 @@ public class UserController {
     }
 
     @GetMapping("/page")
+    @PreAuthorize("hasAuthority('console')")
     @LogAnnotation(module="登录服务",operator="分页获取用户信息，用于后台管理")
     @ApiOperation(value = "分页获取用户信息，用于后台管理", notes = "需要accessToken，需要管理员权限")
     public Result<IPage<User>> page(@ApiParam("页码") @RequestParam(value = "current", required = false, defaultValue = "1") long current,
@@ -130,6 +132,7 @@ public class UserController {
     }
 
     @PostMapping("/status/update")
+    @PreAuthorize("hasAuthority('console')")
     @LogAnnotation(module="登录服务",operator="修改用户状态,用于禁用、锁定用户等操作")
     @ApiOperation(value = "修改用户状态,用于禁用、锁定用户等操作", notes = "需要accessToken，需要管理员权限")
     public Result status(@ApiParam("用户id") @RequestParam("userId") Integer userId,

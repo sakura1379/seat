@@ -1,6 +1,7 @@
 package com.zlr.seat.controller;
 
 import com.zlr.seat.common.constant.RedisConstant;
+import com.zlr.seat.common.limit.RateLimiter;
 import com.zlr.seat.service.SmsCodeService;
 import com.zlr.seat.validator.annotation.IsPhone;
 import com.zlr.seat.vo.Result;

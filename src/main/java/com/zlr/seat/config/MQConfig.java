@@ -20,6 +20,8 @@ public class MQConfig {
     public static final String SECKILL_EXCHANGE = "seckill.exchange";
     public static final String SECKILL_ROUTING_KEY = "seckill.key";
     public static final String QUEUE = "queue";
+    public static final String CLIENT_QUEUE = "client.queue";
+    public static final String CLIENT_EXCHANGE = "client.exchange";
 
     @Bean
     public MessageConverter getMessageConverter() {
@@ -40,6 +42,18 @@ public class MQConfig {
 	public DirectExchange topicDirect(){
 		return new DirectExchange(SECKILL_EXCHANGE);
 	}
+
+    /**
+     * Direct模式 交换机Exchange
+     * */
+    @Bean
+    public Queue clientQueue() {
+        return new Queue(CLIENT_QUEUE, true);
+    }
+    @Bean
+    public DirectExchange clientTopicDirect(){
+        return new DirectExchange(CLIENT_EXCHANGE);
+    }
 
 	/**
      * Topic模式 交换机Exchange

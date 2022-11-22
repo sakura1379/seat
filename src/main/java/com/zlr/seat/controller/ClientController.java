@@ -3,6 +3,7 @@ package com.zlr.seat.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zlr.seat.common.aop.cache.Cache;
 import com.zlr.seat.entity.enums.ResultStatus;
 import com.zlr.seat.entity.pojo.Client;
 import com.zlr.seat.exception.GlobleException;
@@ -13,18 +14,22 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import jdk.nashorn.internal.objects.Global;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * @author Zenglr
  * @program: seat
  * @packagename: com.zlr.seat.controller
  * @Description
+ * TODO 加缓存
  * @create 2022-10-20-下午4:57
  */
 @RestController
@@ -35,7 +40,7 @@ public class ClientController {
     private IClientService clientService;
 
     @GetMapping("/page")
-    @PreAuthorize("hasAuthority('admin')")
+    @PreAuthorize("hasAuthority('console')")
     @ApiOperation(value = "分页获取客户端列表",notes = "需要accessToken，需要管理员权限")
     public Result<IPage<Client>> page(@ApiParam("页码") @RequestParam(value = "current", required = false, defaultValue = "1") long current,
                                       @ApiParam("每页数量") @RequestParam(value = "size", required = false, defaultValue = "5") long size) {
@@ -43,6 +48,7 @@ public class ClientController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('console')")
     @ApiOperation(value = "删除客户端",notes = "需要accessToken，需要管理员权限")
     public Result delete(@ApiParam("id") @PathVariable(value = "id") int id) {
         clientService.removeById(id);
@@ -51,6 +57,7 @@ public class ClientController {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAuthority('console')")
     @ApiOperation(value = "新增或更新客户端,id为null时新增",notes = "需要accessToken，需要管理员权限")
     public Result save(@Validated @RequestBody Client client) {
         validateExist(client);

@@ -26,6 +26,10 @@ import java.util.stream.Collectors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StudentUserDetails extends UserVo implements UserDetails {
 
+    /**
+     * 鉴权的是从这里来的
+     * @return
+     */
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {

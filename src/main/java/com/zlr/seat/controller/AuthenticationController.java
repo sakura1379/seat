@@ -50,12 +50,26 @@ public class AuthenticationController {
     private AuthenticationService authenticationService;
 
 
+//    @PostMapping("/account/login")
+//    @ApiOperation(value = "账号密码登录", notes = "账号可以是用户名或手机号")
+//    public Result<AccessTokenDTO> accountLogin(@ApiParam("用户名或手机号") @NotBlank(message = "账号不能为空") @RequestParam String username,
+//                                                    @ApiParam("密码") @NotBlank(message = "密码不能为空") @RequestParam String password,
+//                                                    @ApiParam("客户端认证请求头") @RequestHeader(value = "Authorization") String authorization) {
+//        Client client = getAndValidatedClient(authorization);
+//        AuthenticationToken authenticationToken = authenticationService.usernameOrMobilePasswordAuthenticate(username, password, client);
+//        AccessTokenDTO response = new AccessTokenDTO();
+//        BeanUtils.copyProperties(authenticationToken, response);
+//        return Result.success(response);
+//    }
     @PostMapping("/account/login")
     @ApiOperation(value = "账号密码登录", notes = "账号可以是用户名或手机号")
     public Result<AccessTokenDTO> accountLogin(@ApiParam("用户名或手机号") @NotBlank(message = "账号不能为空") @RequestParam String username,
-                                                    @ApiParam("密码") @NotBlank(message = "密码不能为空") @RequestParam String password,
-                                                    @ApiParam("客户端认证请求头") @RequestHeader(value = "Authorization") String authorization) {
-        Client client = getAndValidatedClient(authorization);
+                                               @ApiParam("密码") @NotBlank(message = "密码不能为空") @RequestParam String password) {
+        Client client = new Client();
+        client.setId(6);
+        client.setClientId("suibian");
+        client.setEnableRefreshToken(1);
+        client.setClientSecret("suibian");
         AuthenticationToken authenticationToken = authenticationService.usernameOrMobilePasswordAuthenticate(username, password, client);
         AccessTokenDTO response = new AccessTokenDTO();
         BeanUtils.copyProperties(authenticationToken, response);

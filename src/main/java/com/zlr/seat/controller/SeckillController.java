@@ -6,6 +6,7 @@ import com.zlr.seat.common.constant.RedisConstant;
 import com.zlr.seat.common.limit.RateLimiter;
 import com.zlr.seat.common.sercurity.ServerSecurityContext;
 import com.zlr.seat.config.MQConfig;
+import com.zlr.seat.config.RedisConfig;
 import com.zlr.seat.entity.enums.ResultStatus;
 import com.zlr.seat.entity.pojo.OrderInfo;
 import com.zlr.seat.entity.pojo.Seats;
@@ -28,10 +29,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.plaf.synth.SynthScrollBarUI;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -41,7 +45,7 @@ import java.util.concurrent.TimeUnit;
  * @program: seat
  * @packagename: com.zlr.seat.controller
  * @Description
- * TODO 加缓存策略、限流、并发、异常测试
+ *
  * @create 2022-11-03-下午3:46
  */
 @Slf4j
@@ -60,6 +64,9 @@ public class SeckillController implements InitializingBean {
     IUserService userService;
     @Resource
     MQSender mqSender;
+
+    @Resource
+    RedisConfig redisConfig;
 
     /**
      * 如果是集群情况下，需要达到一定量此缓存才能起到重大作用
@@ -92,27 +99,29 @@ public class SeckillController implements InitializingBean {
         StudentUserDetails userDetail = ServerSecurityContext.getUserDetail(true);
         User user = userService.getById(userDetail.getId());
         //验证path
-        boolean check = seckillOrderService.checkPath(user, seatsId, path);
-        if(!check){
-            return Result.error(ResultStatus.ACCESS_LIMIT_REACHED);
-        }
+//        boolean check = seckillOrderService.checkPath(user, seatsId, path);
+//        if(!check){
+//            return Result.error(ResultStatus.ACCESS_LIMIT_REACHED);
+//        }
         //内存标记，减少redis访问
         boolean over = localOverMap.get(seatsId);
         if (over) {
             return Result.error(ResultStatus.ORDER_OVER);
         }
         //预减库存
-        long stock = stringRedisTemplate.opsForValue().decrement(RedisConstant.SECKILL_STOCK+seatsId);
-        if (stock < 0) {
+//        long stock = stringRedisTemplate.opsForValue().decrement(RedisConstant.SECKILL_STOCK+seatsId);
+
+        Long stock = stringRedisTemplate.execute(redisConfig.stockScript(), Collections.singletonList(RedisConstant.SECKILL_STOCK + seatsId), Collections.EMPTY_LIST.toString());
+        if (stock <= 0) {
             localOverMap.put(seatsId, true);
             return Result.error(ResultStatus.ORDER_OVER);
         }
-        //判断是否已经秒杀到了
+        //判断是否重复秒杀
         SeckillOrder order = seckillOrderService.checkSecKillOrder(user.getId(), seatsId);
         if (order != null) {
             return Result.error(ResultStatus.REPEATE_ORDER);
         }
-        //入队
+        //入队 下订单
         SeckillMessage mm = new SeckillMessage();
         mm.setUser(user);
         mm.setSeatsId(seatsId);

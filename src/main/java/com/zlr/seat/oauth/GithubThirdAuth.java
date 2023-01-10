@@ -94,7 +94,7 @@ public class GithubThirdAuth{
      * @return
      */
     private String getAccessToken(String result) {
-        // result
+        // result.csv.csv
         // access_token=aa5a59cd212b2c0f3c1f285822b2085f52fe3850&scope=user%3Aemail&token_type=bearer
         try {
             return result.split("&")[0].split("=")[1];

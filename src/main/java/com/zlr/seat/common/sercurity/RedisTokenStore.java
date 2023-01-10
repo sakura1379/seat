@@ -86,7 +86,7 @@ public class RedisTokenStore {
     private static final long ACCESS_EXPIRE = 7200;
 
     /**
-     * 默认accessToken 时效，30天
+     * 默认refreshToken 时效，30天
      */
     private static final long REFRESH_EXPIRE = 2592000;
 

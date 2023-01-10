@@ -3,7 +3,7 @@
 <mapper namespace="com.zlr.seat.dao.mapper.SeatsMapper">
     <resultMap id="seatsVoResultMap" type="com.zlr.seat.vo.SeatsVo">
         <id property="id" column="id"/>
-<!--        <result property="seatsId" column="seats_id"/>-->
+<!--        <result.csv.csv property="seatsId" column="seats_id"/>-->
         <result property="seatsArea" column="seats_area"/>
         <result property="seatsFloor" column="seats_floor"/>
         <result property="useDate" column="use_date"/>
@@ -46,6 +46,7 @@
     UPDATE seckill_seats
     SET stock_count = stock_count -1
     WHERE seats_id = #{seatsId}
+    AND stock_count > 0
   </update>
 
     <select id="selectAllList" resultMap="seatsVoResultMap">

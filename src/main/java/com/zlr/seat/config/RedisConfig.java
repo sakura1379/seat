@@ -139,4 +139,18 @@ public class RedisConfig {
         redisScript.setResultType(Long.class);
         return redisScript;
     }
+
+    /**
+     * redis预减库存lua脚本
+     * @return
+     */
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisScript<Long> stockScript() {
+        DefaultRedisScript redisScript = new DefaultRedisScript<>();
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("scripts/redis/stock.lua")));
+        redisScript.setResultType(Long.class);
+        return redisScript;
+
+    }
 }
